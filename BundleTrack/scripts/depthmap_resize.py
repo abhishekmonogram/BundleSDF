@@ -17,11 +17,11 @@ def resize_depth_maps_with_nearest_neighbor(folder_path, target_height, target_w
 
 if __name__ == "__main__":
     # Replace "/path/to/depth_maps_folder" with the actual folder path containing depth maps
-    depth_maps_folder = "/path/to/depth_maps_folder"
+    depth_maps_folder = "/home/abhishek/BundleSDF/femur_647/depth"
 
     # Define the target resolution
     target_height = 480
-    target_width = 777
+    target_width = 853
 
     # Resize the depth maps using nearest-neighbor interpolation and overwrite the original files
     resize_depth_maps_with_nearest_neighbor(depth_maps_folder, target_height, target_width)
