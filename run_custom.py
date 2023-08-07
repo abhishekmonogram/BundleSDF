@@ -33,7 +33,7 @@ def run_one_video(video_dir='/home/bowen/debug/2022-11-18-15-10-24_milk', out_fo
   cfg_bundletrack['feature_corres']['max_dist_no_neighbor'] = 0.01
   cfg_bundletrack['feature_corres']['max_normal_no_neighbor'] = 20
   cfg_bundletrack['feature_corres']['map_points'] = True
-  cfg_bundletrack['feature_corres']['resize'] = 400
+  cfg_bundletrack['feature_corres']['resize'] = 600
   cfg_bundletrack['feature_corres']['rematch_after_nerf'] = True
   cfg_bundletrack['keyframe']['min_rot'] = 5
   cfg_bundletrack['ransac']['inlier_dist'] = 0.01
@@ -51,7 +51,7 @@ def run_one_video(video_dir='/home/bowen/debug/2022-11-18-15-10-24_milk', out_fo
   cfg_nerf['continual'] = True
   cfg_nerf['trunc_start'] = 0.01
   cfg_nerf['trunc'] = 0.01
-  cfg_nerf['mesh_resolution'] = 0.005
+  cfg_nerf['mesh_resolution'] = 0.0007
   cfg_nerf['down_scale_ratio'] = 1
   cfg_nerf['fs_sdf'] = 0.1
   cfg_nerf['far'] = cfg_bundletrack['depth_processing']["zfar"]
@@ -67,7 +67,7 @@ def run_one_video(video_dir='/home/bowen/debug/2022-11-18-15-10-24_milk', out_fo
 
   tracker = BundleSdf(cfg_track_dir=cfg_track_dir, cfg_nerf_dir=cfg_nerf_dir, start_nerf_keyframes=5, use_gui=use_gui)
 
-  reader = YcbineoatReader(video_dir=video_dir, shorter_side=480)
+  reader = YcbineoatReader(video_dir=video_dir, shorter_side=1200)
 
 
   for i in range(0,len(reader.color_files),args.stride):
@@ -120,13 +120,13 @@ def run_one_video_global_nerf(out_folder='/home/bowen/debug/bundlesdf_scan_coffe
 
   cfg_nerf = yaml.load(open(f"{out_folder}/config_nerf.yml",'r'))
   cfg_nerf['n_step'] = 2000
-  cfg_nerf['N_samples'] = 64
-  cfg_nerf['N_samples_around_depth'] = 256
+  cfg_nerf['N_samples'] = 256
+  cfg_nerf['N_samples_around_depth'] = 768
   cfg_nerf['first_frame_weight'] = 1
   cfg_nerf['down_scale_ratio'] = 1
   cfg_nerf['finest_res'] = 256
   cfg_nerf['num_levels'] = 16
-  cfg_nerf['mesh_resolution'] = 0.002
+  cfg_nerf['mesh_resolution'] = 0.0007
   cfg_nerf['n_train_image'] = 500
   cfg_nerf['fs_sdf'] = 0.1
   cfg_nerf['frame_features'] = 2
@@ -191,12 +191,12 @@ def postprocess_mesh(out_folder):
 if __name__=="__main__":
   parser = argparse.ArgumentParser()
   parser.add_argument('--mode', type=str, default="run_video", help="run_video / global_refine / get_mesh")
-  parser.add_argument('--video_dir', type=str, default="/home/bowen/debug/2022-11-18-15-10-24_milk/")
-  parser.add_argument('--out_folder', type=str, default="/home/bowen/debug/bundlesdf_2022-11-18-15-10-24_milk")
+  parser.add_argument('--video_dir', type=str, default="/home/digitalstorm/BundleSDF/femur_3005_truncated")
+  parser.add_argument('--out_folder', type=str, default="/home/digitalstorm/BundleSDF/femur_3005_truncated/output_3")
   parser.add_argument('--use_segmenter', type=int, default=0)
   parser.add_argument('--use_gui', type=int, default=1)
   parser.add_argument('--stride', type=int, default=1, help='interval of frames to run; 1 means using every frame')
-  parser.add_argument('--debug_level', type=int, default=2, help='higher means more logging')
+  parser.add_argument('--debug_level', type=int, default=0, help='higher means more logging')
   args = parser.parse_args()
 
   if args.mode=='run_video':

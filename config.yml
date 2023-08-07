@@ -4,7 +4,7 @@ netdepth: 8
 netwidth: 256
 netdepth_fine: 8
 netwidth_fine: 256
-N_rand: 2048          # Batch number of rays
+N_rand: 2048    # Batch number of rays
 first_frame_ray_in_batch: 0
 lrate: 0.01
 lrate_pose: 0.01
@@ -15,7 +15,7 @@ netchunk: 6553600
 no_batching: 0
 amp: true
 
-N_samples: 128     #number of coarse samples per ray
+N_samples: 256     #number of coarse samples per ray
 N_samples_around_depth: 64
 N_importance: 0
 N_importance_iter: 1
@@ -42,7 +42,7 @@ i_pose: 999999
 save_octree_clouds: True
 
 finest_res: 128
-base_res: 16
+base_res: 4
 num_levels: 4
 log2_hashmap_size: 22
 datadir: /mnt/9a72c439-d0a7-45e8-8d20-d7a235d02763/github/bundlesdf/data/bundlesdf_bundlesdf_e03000196
