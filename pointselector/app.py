@@ -3,8 +3,14 @@ import argparse
 
 class PointPickerApp:
     def __init__(self, args):
-        # Load OBJ file
-        reader = vtk.vtkOBJReader()
+        # Load OBJ or STL file
+        if args.obj_path.lower().endswith('.obj'):
+            reader = vtk.vtkOBJReader()
+        elif args.obj_path.lower().endswith('.stl'):
+            reader = vtk.vtkSTLReader()
+        else:
+            raise ValueError("Unsupported file format. Only OBJ and STL files are supported.")
+
         reader.SetFileName(args.obj_path)
         reader.Update()
 
@@ -15,6 +21,13 @@ class PointPickerApp:
         # Create an actor
         actor = vtk.vtkActor()
         actor.SetMapper(mapper)
+
+        # Get the bounds of the loaded model
+        bounds = reader.GetOutput().GetBounds()
+        x_range = bounds[1] - bounds[0]
+        y_range = bounds[3] - bounds[2]
+        z_range = bounds[5] - bounds[4]
+        max_range = max(x_range, y_range, z_range)
 
         # Create a renderer
         renderer = vtk.vtkRenderer()
@@ -55,7 +68,7 @@ class PointPickerApp:
             # Create a sphere source for the picked point
             sphere = vtk.vtkSphereSource()
             sphere.SetCenter(picked_point)
-            sphere.SetRadius(args.point_size * 0.0005)  # Adjust the radius as needed
+            sphere.SetRadius(max_range * args.point_size * 0.0005)  # Scale by max range
 
             sphere_mapper = vtk.vtkPolyDataMapper()
             sphere_mapper.SetInputConnection(sphere.GetOutputPort())
@@ -71,6 +84,8 @@ class PointPickerApp:
 
         # Add object's axis for visualization
         axes = vtk.vtkAxesActor()
+        axes.AxisLabelsOff()  # Turn off axis labels
+        axes.SetTotalLength(max_range , max_range , max_range )  # Adjust the axis size
         renderer.AddActor(axes)
 
         # Set up camera
@@ -100,9 +115,7 @@ if __name__ == "__main__":
     parser.add_argument('--point_size', type=int, default=5)
     parser.add_argument('--ui_window_width', type=int, default=5120)
     parser.add_argument('--ui_window_height', type=int, default=2880)
-    # parser.add_argument('--use_gui', type=int, default=1)
-    # parser.add_argument('--stride', type=int, default=1, help='interval of frames to run; 1 means using every frame')
-    # parser.add_argument('--debug_level', type=int, default=0, help='higher means more logging')
+    
     args = parser.parse_args()
 
     app = PointPickerApp(args)
