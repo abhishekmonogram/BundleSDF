@@ -30,8 +30,8 @@ def process_files_in_folder(input_folder, output_folder):
             cv2.imwrite(output_path, binary_mask)
 
 if __name__ == "__main__":
-    input_folder = "/home/abhishek/BundleSDF/femur_3005/masks"
-    output_folder = "/home/abhishek/BundleSDF/femur_3005/masks_binary"
+    input_folder = "/home/abhishek/XMem/workspace/output/masks"
+    output_folder = "/home/abhishek/XMem/workspace/output/masks_b"
 
     process_files_in_folder(input_folder, output_folder)
 

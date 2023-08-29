@@ -63,6 +63,7 @@ class PointPickerApp:
 
             # Get the picked point in world coordinates
             picked_point = world_picker.GetPickPosition()
+            self.picked_points.append(picked_point)
             print(f"Picked Point is visible at co-ordinate: {picked_point}")
 
             # Create a sphere source for the picked point
@@ -76,6 +77,9 @@ class PointPickerApp:
             sphere_actor = vtk.vtkActor()
             sphere_actor.SetMapper(sphere_mapper)
             renderer.AddActor(sphere_actor)
+
+            # Call the function to create the polygon and highlight the surface
+            self.create_polygon_and_highlight()
 
             render_window.Render()
 
@@ -110,9 +114,9 @@ class PointPickerApp:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--obj_path', type=str, default="/home/abhishek/BundleSDF/obj_meshes/highres_7.obj", help="Select the path to the obj file")
-    parser.add_argument('--save_points_filename', type=str, default="ct_landmarks.txt", help =" ct_landmarks.txt / reconstruction_landmarks.txt")
-    parser.add_argument('--point_size', type=int, default=5)
+    parser.add_argument('--obj_path', type=str, default="/home/abhishek/BundleSDF/pointselector/recon-cadaverlab/3DModel.obj", help="Select the path to the obj file")
+    parser.add_argument('--save_points_filename', type=str, default="reconstruction_landmarks.txt", help =" ct_landmarks.txt / reconstruction_landmarks.txt")
+    parser.add_argument('--point_size', type=int, default=50)
     parser.add_argument('--ui_window_width', type=int, default=5120)
     parser.add_argument('--ui_window_height', type=int, default=2880)
     
